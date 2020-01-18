@@ -1,0 +1,2 @@
+# writePlatForm
+write platform
