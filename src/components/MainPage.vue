@@ -1,16 +1,20 @@
 <template>
   <div class='MainPage'>
-gggg
+      <ContentList></ContentList>
   </div>
 </template>
 
 <script>
 import common from '../common/common'
+import ContentList from './ContentList'
 export default {
   data () {
     return {
 
     }
+  },
+  components: {
+    ContentList
   },
   methods: {
     get_github_content (userName, accessToken, path) {
@@ -66,7 +70,7 @@ export default {
     },
     submit () {
       // update_github_marks('zaneblbl', '9e869d2d1736e843d42d254dc690e5c26a753f8b','BookMark/noteBook.json', document.getElementById('note__textarea').value);
-      this.get_github_content('zaneblbl', '9e869d2d1736e843d42d254dc690e5c26a753f8b', 'BookMark/noteBook.json').then((data) => {
+      this.get_github_content('zaneblbl', '9e869d2d1736e843d42d254dc690e5c26a753f8b', 'story/noteBook.json').then((data) => {
         let res = JSON.parse(data)
         console.log(common.Base64.decode(res.content))
       })
