@@ -7,6 +7,7 @@
 <script>
 import common from '../common/common'
 import ContentList from './ContentList'
+import githubOperate from '../common/githubOperate.js'
 export default {
   data () {
     return {
@@ -17,60 +18,50 @@ export default {
     ContentList
   },
   methods: {
-    get_github_content (userName, accessToken, path) {
-      let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
-      return new Promise((resolve, reject) => {
-        try {
-          // chrome.extension.sendMessage({
-          //     'url': url,
-          //     'type': 'get'
-          // }, function (ret) {
-          //     if (ret) {
-          //         resolve(ret);
-          //     } else {
-          //         reject('get content undefined');
-          //     }
-          // });
-          let xhr = new XMLHttpRequest()
-          xhr.onreadystatechange = function () {
-            if (xhr.status === 200 && xhr.readyState === 4) {
-              resolve(xhr.responseText)
-            }
-          }
-          xhr.open('get', url, true)
-          xhr.send()
-        } catch (e) {
-          reject(e)
-        }
-      })
-    },
-    update_github_marks (userName, accessToken, path, msg) {
-      let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
-      let params = {}
-      this.get_github_content(userName, accessToken, path).then((data) => {
-        params.sha = JSON.parse(data).sha
-        params.message = 'upload note'
-        // content内容需转成base64
-        params.content = common.Base64.encode(JSON.stringify(msg))
-        return new Promise((resolve, reject) => {
-          try {
-            let xhr = new XMLHttpRequest()
-            xhr.onreadystatechange = function () {
-              if (xhr.status === 200 && xhr.readyState === 4) {
-                resolve(xhr.responseText)
-              }
-            }
-            xhr.open('put', url, true)
-            xhr.send(JSON.stringify(params))
-          } catch (e) {
-            reject(e)
-          }
-        })
-      })
-    },
+    // get_github_content (userName, accessToken, path) {
+    //   let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
+    //   return new Promise((resolve, reject) => {
+    //     try {
+    //       let xhr = new XMLHttpRequest()
+    //       xhr.onreadystatechange = function () {
+    //         if (xhr.status === 200 && xhr.readyState === 4) {
+    //           resolve(xhr.responseText)
+    //         }
+    //       }
+    //       xhr.open('get', url, true)
+    //       xhr.send()
+    //     } catch (e) {
+    //       reject(e)
+    //     }
+    //   })
+    // },
+    // update_github_marks (userName, accessToken, path, msg) {
+    //   let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
+    //   let params = {}
+    //   this.get_github_content(userName, accessToken, path).then((data) => {
+    //     params.sha = JSON.parse(data).sha
+    //     params.message = 'upload note'
+    //     // content内容需转成base64
+    //     params.content = common.Base64.encode(JSON.stringify(msg))
+    //     return new Promise((resolve, reject) => {
+    //       try {
+    //         let xhr = new XMLHttpRequest()
+    //         xhr.onreadystatechange = function () {
+    //           if (xhr.status === 200 && xhr.readyState === 4) {
+    //             resolve(xhr.responseText)
+    //           }
+    //         }
+    //         xhr.open('put', url, true)
+    //         xhr.send(JSON.stringify(params))
+    //       } catch (e) {
+    //         reject(e)
+    //       }
+    //     })
+    //   })
+    // },
     submit () {
       // update_github_marks('zaneblbl', '9e869d2d1736e843d42d254dc690e5c26a753f8b','BookMark/noteBook.json', document.getElementById('note__textarea').value);
-      this.get_github_content('zaneblbl', '9e869d2d1736e843d42d254dc690e5c26a753f8b', 'story/noteBook.json').then((data) => {
+      this.githubOperate.getFromGitHub('zaneblbl', '9e869d2d1736e843d42d254dc690e5c26a753f8b', 'story/noteBook.json').then((data) => {
         let res = JSON.parse(data)
         console.log(common.Base64.decode(res.content))
       })

@@ -1,7 +1,5 @@
 var common = {
-
   // 字符串转base64
-
   Base64: {
     _keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
     encode: function (e) {
