@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import common from '../common/common'
+// import common from '../common/common'
 import ContentList from './ContentList'
 import githubOperate from '../common/githubOperate.js'
 export default {
@@ -16,6 +16,9 @@ export default {
   },
   components: {
     ContentList
+  },
+  created() {
+    this.submit()
   },
   methods: {
     // get_github_content (userName, accessToken, path) {
@@ -61,10 +64,8 @@ export default {
     // },
     submit () {
       // update_github_marks('zaneblbl', '9e869d2d1736e843d42d254dc690e5c26a753f8b','BookMark/noteBook.json', document.getElementById('note__textarea').value);
-      this.githubOperate.getFromGitHub('zaneblbl', '9e869d2d1736e843d42d254dc690e5c26a753f8b', 'story/noteBook.json').then((data) => {
-        let res = JSON.parse(data)
-        console.log(common.Base64.decode(res.content))
-      })
+      let result = githubOperate.getFromGitHub('zaneblbl', '9e869d2d1736e843d42d254dc690e5c26a753f8b', 'story/noteBook.json')
+      console.log(result)
     }
 
   }

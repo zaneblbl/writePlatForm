@@ -1,5 +1,6 @@
 import common from './common.js'
 import axios from './axios.js'
+/* eslint-disable */
 var operate = {
   // 增
   addToGitHub() {
