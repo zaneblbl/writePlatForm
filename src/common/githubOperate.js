@@ -19,10 +19,6 @@ var operate = {
     })
 
   },
-  // 删
-  deleteToGitHub() {
-
-  },
   // 查
   getFromGitHub(userName, accessToken, path) {
     return new Promise((resolve, reject) => {
@@ -76,8 +72,6 @@ var operate = {
 
     return new Promise((resolve, reject) => {
       operate.getShaFromGitHub(userName, accessToken, path).then((data) => {
-        console.log(data);
-
         // // 需要获取文件sha
         params.sha = data
         params.message = 'upload note'
@@ -89,9 +83,33 @@ var operate = {
           console.log(fail);
           reject(fail)
         })
+      },fail=>{
+        reject(fail)
       })
 
     })
-  }
+  },
+  // 删
+  DeleteFromGitHub(userName, accessToken, path) {
+    return new Promise((resolve, reject) => {
+      let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
+      let params = {}
+      operate.getShaFromGitHub(userName, accessToken, path).then((data) => {
+        // // 需要获取文件sha
+        params.sha = data
+        params.message = 'delete note'
+        axios('delete', url, JSON.stringify(params)).then(res => {
+          resolve(res)
+        }, fail => {
+          console.log(fail);
+          reject(fail)
+        })
+      },fail=>{
+        reject(fail)
+      })
+
+    })
+
+  },
 }
 export default operate

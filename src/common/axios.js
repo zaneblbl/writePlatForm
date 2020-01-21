@@ -26,6 +26,8 @@ export default function (method, url, data = null) {
     return instance.get(url, {params: data})
   } else if (method === 'put') {
     return instance.put(url, data)
+  } else if (method === 'delete') {
+    return instance.delete(url, data)
   } else {
     console.log('未知的method')
     return false

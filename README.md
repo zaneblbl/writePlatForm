@@ -3,16 +3,5 @@ write platform
 # github api
 https://segmentfault.com/a/1190000015144126?utm_source=tag-newest
 
-storyList:[
-    {
-        id:1,
-        title:'将夜行鬼',
-        contentList:[
-            {
-                listId:1,
-                contentTitle:'第一章',
-                content:''
-            }
-        ]
-    }
-]
+# 注意
+personal access token 不能放在文件中，上传会被删除

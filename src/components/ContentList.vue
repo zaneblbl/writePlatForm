@@ -1,6 +1,6 @@
 <template>
   <div class='ContentList'>
-    <div v-for="(item,index) in list" :key="index" @click='editContent(item.path,index)' :class="index==currentIndex?'check':'uncheck'">
+    <div v-for="(item,index) in list" :key="index" @click='editContent(item,index)' :class="index==currentIndex?'check':'uncheck'">
       {{item.name}}
     </div>
   </div>
@@ -16,10 +16,10 @@ export default {
     }
   },
   methods: {
-    editContent(path, index) {
-      this.currentPath = path
+    editContent(item, index) {
+      this.currentPath = item.path
       this.currentIndex = index
-      this.$emit('editContent', path)
+      this.$emit('editContent', item)
     }
   }
 }
@@ -29,7 +29,7 @@ export default {
   .ContentList{
     border:1px solid ;
     width:150px;
-    height:300px;
+    height:100%;
     overflow: scroll;
     .check{
       background-color:#ffd410
