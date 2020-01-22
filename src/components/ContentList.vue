@@ -15,6 +15,9 @@ export default {
       currentIndex: 0
     }
   },
+  created() {
+    this.editContent(this.list[0], 0)
+  },
   methods: {
     editContent(item, index) {
       this.currentPath = item.path

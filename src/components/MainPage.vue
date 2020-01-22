@@ -1,7 +1,7 @@
 <template>
   <div class='MainPage'>
     <div class='mainbox'>
-      <ContentList :list="list" @editContent='getContent'></ContentList>
+      <ContentList :list="list" @editContent='getContent' v-if='list.length'></ContentList>
       <ContentEdit :content='content' @save='save' v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.3)"></ContentEdit>
     </div>
 

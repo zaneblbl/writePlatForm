@@ -98,7 +98,9 @@ var operate = {
         // // 需要获取文件sha
         params.sha = data
         params.message = 'delete note'
-        axios('delete', url, JSON.stringify(params)).then(res => {
+        url+=`&message=${params.message}&sha=${params.sha}`
+        
+        axios('delete', url).then(res => {
           resolve(res)
         }, fail => {
           console.log(fail);
