@@ -1,7 +1,8 @@
+ /* eslint-disable */
 <template>
   <div class='MainPage'>
 
-    <Head @toDelete='toDelete' @showAddDialog='showAddDialog'></Head>
+    <Head @toDelete='toDelete' @showAddDialog='showAddDialog' @choosePath='choosePath'></Head>
     <div class='mainbox'>
 
       <ContentList :list="list" @editContent='getContent' v-if='list.length'></ContentList>
@@ -16,112 +17,120 @@
 </template>
 
 <script>
-// import common from '../common/common'
-import Head from './Head'
-import ContentList from './ContentList'
-import githubOperate from '../common/githubOperate.js'
-import AddDialog from './AddDialog'
-import ContentEdit from './ContentEdit'
-export default {
-  data() {
-    return {
-      token: '',
-      account: 'zaneblbl',
-      path: 'story/test', // story/test/test2.json
-      list: [],
-      isShowAddDialog: false,
-      maxId: 0,
-      content: '',
-      loading: false,
-      currentTitle: '',
-      currentId: '',
-      currentPath: ''
-    }
-  },
-  components: {
-    ContentList,
-    AddDialog,
-    ContentEdit,
-    Head
-  },
-  created() {
-    this.token = localStorage.getItem('token')
-    this.getlist()
-  },
-  methods: {
-    getlist() {
-      githubOperate.getListFromGitHub(this.account, this.token, `${this.path}`).then(res => {
-        this.list = res
-        this.maxId = res.length
-      })
+  // import common from '../common/common'
+  import Head from './Head'
+  import ContentList from './ContentList'
+  import githubOperate from '../common/githubOperate.js'
+  import AddDialog from './AddDialog'
+  import ContentEdit from './ContentEdit'
+  export default {
+    data() {
+      return {
+        token: '',
+        account: 'zaneblbl',
+        path: 'story/test', // story/test/test2.json
+        list: [],
+        isShowAddDialog: false,
+        maxId: 0,
+        content: '',
+        loading: false,
+        currentTitle: '',
+        currentId: '',
+        currentPath: ''
+      }
     },
-    add(title) {
-      this.loading = true
-      let obj = {}
-      obj.id = this.maxId + 1
-      obj.title = title
-      obj.content = ''
-      githubOperate.addToGitHub(this.account, this.token, `${this.path}/${title}-${obj.id}.json`, obj).then(res => {
-        this.$message({
-          message: '添加成功',
-          type: 'success'
-        })
+    components: {
+      ContentList,
+      AddDialog,
+      ContentEdit,
+      Head
+    },
+    created() {
+      this.token = localStorage.getItem('token')
+      this.account = localStorage.getItem('account')
+      this.getlist()
+    },
+    methods: {
+      choosePath(path) {
+        this.path = 'story/' + path
+        console.log(this.path)
+
+        this.list = []
         this.getlist()
-        this.loading = false
-      }, e => {
-        this.loading = false
-        this.$message.error('添加失败')
-      })
-    },
-    toDelete() {
-      this.loading = true
-      githubOperate.DeleteFromGitHub(this.account, this.token, `${this.currentPath}`).then(res => {
-        this.$message({
-          message: '删除成功',
-          type: 'success'
+      },
+      getlist() {
+        githubOperate.getListFromGitHub(this.account, this.token, `${this.path}`).then(res => {
+          this.list = res
+          this.maxId = res.length
         })
-        this.getlist()
-        this.loading = false
-      }, e => {
-        this.loading = false
-        this.$message.error('删除失败')
-      })
-    },
-    getContent(info) {
-      this.loading = true
-      githubOperate.getFromGitHub(this.account, this.token, `story/${info.path}`).then(res => {
-        this.content = res
-        let data = JSON.parse(res)
-        this.currentTitle = data.title
-        this.currentId = data.id
-        this.currentPath = `story/${info.path}`
-        this.loading = false
-      })
-    },
-    save(content) {
-      this.loading = true
-      let obj = {}
-      obj.id = this.currentId
-      obj.title = this.currentTitle
-      obj.content = content
-      githubOperate.UpdateToGitHub(this.account, this.token, `${this.path}/${obj.title}-${obj.id}.json`, obj).then(
-        res => {
-          this.loading = false
+      },
+      add(title) {
+        this.loading = true
+        let obj = {}
+        obj.id = this.maxId + 1
+        obj.title = title
+        obj.content = ''
+        githubOperate.addToGitHub(this.account, this.token, `${this.path}/${title}-${obj.id}.json`, obj).then(res => {
           this.$message({
-            message: '保存成功',
+            message: '添加成功',
             type: 'success'
           })
+          this.getlist()
+          this.loading = false
         }, e => {
           this.loading = false
-          this.$message.error('保存失败')
+          this.$message.error('添加失败')
         })
-    },
-    showAddDialog() {
-      this.isShowAddDialog = !this.isShowAddDialog
-    }
+      },
+      toDelete() {
+        this.loading = true
+        githubOperate.DeleteFromGitHub(this.account, this.token, `${this.currentPath}`).then(res => {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
+          this.getlist()
+          this.loading = false
+        }, e => {
+          this.loading = false
+          this.$message.error('删除失败')
+        })
+      },
+      getContent(info) {
+        this.loading = true
+        githubOperate.getFromGitHub(this.account, this.token, `story/${info.path}`).then(res => {
+          this.content = res
+          let data = JSON.parse(res)
+          this.currentTitle = data.title
+          this.currentId = data.id
+          this.currentPath = `story/${info.path}`
+          this.loading = false
+        })
+      },
+      save(content) {
+        this.loading = true
+        let obj = {}
+        obj.id = this.currentId
+        obj.title = this.currentTitle
+        obj.content = content
+        githubOperate.UpdateToGitHub(this.account, this.token, `${this.path}/${obj.title}-${obj.id}.json`, obj).then(
+          res => {
+            this.loading = false
+            this.$message({
+              message: '保存成功',
+              type: 'success'
+            })
+          }, e => {
+            this.loading = false
+            this.$message.error('保存失败')
+          })
+      },
+      showAddDialog() {
+        this.isShowAddDialog = !this.isShowAddDialog
+      }
 
+    }
   }
-}
 
 </script>
 
@@ -134,7 +143,7 @@ export default {
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
-    box-shadow: 5px 10px 15px 2px rgba(0,0,0,0.1);
+    box-shadow: 5px 10px 15px 2px rgba(0, 0, 0, 0.1);
   }
 
   .mainbox {

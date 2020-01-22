@@ -33,6 +33,7 @@ export default {
         axios('get', url).then(res => {
           this.loading = false
           localStorage.setItem('token', this.tokenValue)
+          localStorage.setItem('account', 'zaneblbl')
           this.$router.push({path: '/MainPage'})
         }, error => {
           this.loading = false
