@@ -1,24 +1,29 @@
 <template>
   <div class='MainPage'>
+
+    <Head @toDelete='toDelete' @showAddDialog='showAddDialog'></Head>
     <div class='mainbox'>
+
       <ContentList :list="list" @editContent='getContent' v-if='list.length'></ContentList>
-      <ContentEdit :content='content' @save='save' v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.3)"></ContentEdit>
+      <ContentEdit :content='content' @save='save' v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.3)">
+      </ContentEdit>
+
     </div>
 
-      <div class='operateBtn' @click='showAddDialog' >新增</div>
-      <div class='operateBtn' @click='toDelete' >删除</div>
-      <AddDialog @addToGithub='add' @close='showAddDialog' v-if='isShowAddDialog'></AddDialog>
+    <AddDialog @addToGithub='add' @close='showAddDialog' v-if='isShowAddDialog'></AddDialog>
+
   </div>
 </template>
 
 <script>
 // import common from '../common/common'
+import Head from './Head'
 import ContentList from './ContentList'
 import githubOperate from '../common/githubOperate.js'
 import AddDialog from './AddDialog'
 import ContentEdit from './ContentEdit'
 export default {
-  data () {
+  data() {
     return {
       token: '',
       account: 'zaneblbl',
@@ -36,7 +41,8 @@ export default {
   components: {
     ContentList,
     AddDialog,
-    ContentEdit
+    ContentEdit,
+    Head
   },
   created() {
     this.token = localStorage.getItem('token')
@@ -50,6 +56,7 @@ export default {
       })
     },
     add(title) {
+      this.loading = true
       let obj = {}
       obj.id = this.maxId + 1
       obj.title = title
@@ -60,6 +67,7 @@ export default {
           type: 'success'
         })
         this.getlist()
+        this.loading = false
       }, e => {
         this.loading = false
         this.$message.error('添加失败')
@@ -90,22 +98,23 @@ export default {
         this.loading = false
       })
     },
-    save (content) {
+    save(content) {
       this.loading = true
       let obj = {}
       obj.id = this.currentId
       obj.title = this.currentTitle
       obj.content = content
-      githubOperate.UpdateToGitHub(this.account, this.token, `${this.path}/${obj.title}-${obj.id}.json`, obj).then(res => {
-        this.loading = false
-        this.$message({
-          message: '保存成功',
-          type: 'success'
+      githubOperate.UpdateToGitHub(this.account, this.token, `${this.path}/${obj.title}-${obj.id}.json`, obj).then(
+        res => {
+          this.loading = false
+          this.$message({
+            message: '保存成功',
+            type: 'success'
+          })
+        }, e => {
+          this.loading = false
+          this.$message.error('保存失败')
         })
-      }, e => {
-        this.loading = false
-        this.$message.error('保存失败')
-      })
     },
     showAddDialog() {
       this.isShowAddDialog = !this.isShowAddDialog
@@ -113,15 +122,25 @@ export default {
 
   }
 }
+
 </script>
 
 <style lang='scss'>
-.mainbox{
-  display: flex;
-  width:1000px;
-  height:500px;
-  position: absolute;
-  left:50%;
-  transform: translate(-50%,0);
-}
+  .MainPage {
+    width: 1000px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    box-shadow: 5px 10px 15px 2px rgba(0,0,0,0.1);
+  }
+
+  .mainbox {
+    display: flex;
+    width: 100%;
+    height: 100%;
+  }
+
 </style>

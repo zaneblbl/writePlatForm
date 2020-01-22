@@ -1,6 +1,7 @@
 <template>
   <div class='ContentList'>
-    <div v-for="(item,index) in list" :key="index" @click='editContent(item,index)' :class="index==currentIndex?'check':'uncheck'">
+    <div v-for="(item,index) in list" :key="index" @click='editContent(item,index)'
+      :class="index==currentIndex?'check':'uncheck'">
       {{item.name}}
     </div>
   </div>
@@ -26,19 +27,38 @@ export default {
     }
   }
 }
+
 </script>
 
 <style lang='scss'>
-  .ContentList{
-    border:1px solid ;
-    width:150px;
-    height:100%;
-    overflow: scroll;
-    .check{
-      background-color:#ffd410
-    }
-    .uncheck{
-      background-color: #fff
+  @mixin listItem {
+    cursor: pointer;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover{
+      opacity: 0.6;
     }
   }
+
+  .ContentList {
+    background: #dbdddf;
+    width: 150px;
+    height: 100%;
+    overflow: auto;
+
+    .check {
+      @include listItem;
+      background-color: #94b6d8;
+
+    }
+
+    .uncheck {
+      @include listItem;
+      color:rgb(117, 117, 117);
+      background: #dbdddf;
+    }
+  }
+
 </style>
