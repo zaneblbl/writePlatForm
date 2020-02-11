@@ -10,9 +10,11 @@
   </div>
 </template>
 
-<script>
-  import axios from '../common/axios.js'
-  export default {
+<script lang='ts'>
+  import axios from '../common/axios'
+import {Component,Vue} from 'vue-property-decorator'
+@Component
+export default class AddDialog extends Vue{
     data() {
       return {
         tokenValue: '',

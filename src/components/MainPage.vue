@@ -1,4 +1,4 @@
- /* eslint-disable */
+
 <template>
   <div class='MainPage'>
 
@@ -16,14 +16,16 @@
   </div>
 </template>
 
-<script>
+<script lang='ts'>
   // import common from '../common/common'
-  import Head from './Head'
-  import ContentList from './ContentList'
-  import githubOperate from '../common/githubOperate.js'
-  import AddDialog from './AddDialog'
-  import ContentEdit from './ContentEdit'
-  export default {
+  import Head from './Head.vue'
+  import ContentList from './ContentList.vue'
+  import githubOperate from '../common/githubOperate.ts'
+  import AddDialog from './AddDialog.vue'
+  import ContentEdit from './ContentEdit.vue'
+import {Component,Vue} from 'vue-property-decorator'
+@Component
+export default class AddDialog extends Vue{
     data() {
       return {
         token: '',

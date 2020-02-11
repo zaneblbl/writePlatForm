@@ -15,9 +15,11 @@
   </div>
 </template>
 
-<script>
-import githubOperate from '../common/githubOperate.js'
-export default {
+<script lang='ts'>
+import githubOperate from '../common/githubOperate.ts'
+import {Component,Vue} from 'vue-property-decorator'
+@Component
+export default class AddDialog extends Vue{
   data() {
     return {
       list: [],

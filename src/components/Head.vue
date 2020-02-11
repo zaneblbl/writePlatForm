@@ -8,9 +8,11 @@
   </div>
 </template>
 
-<script>
-import PathList from './PathList'
-export default {
+<script lang='ts'>
+import PathList from './PathLis.vue'
+import {Component,Vue} from 'vue-property-decorator'
+@Component
+export default class AddDialog extends Vue{
   data() {
     return {
       showChoosePath: false

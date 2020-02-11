@@ -9,8 +9,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang='ts'>
+import {Component,Vue} from 'vue-property-decorator'
+@Component
+export default class AddDialog extends Vue{
   data() {
     return {
       title: ''

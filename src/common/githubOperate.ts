@@ -1,6 +1,5 @@
-import common from './common.js'
-import axios from './axios.js'
-/* eslint-disable */
+import common from './common.ts'
+import axios from './axios.ts'
 var operate = {
   // 增
   addToGitHub(userName, accessToken, path, msg) {
