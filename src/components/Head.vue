@@ -9,33 +9,32 @@
 </template>
 
 <script lang='ts'>
-import PathList from './PathLis.vue'
-import {Component,Vue} from 'vue-property-decorator'
-@Component
-export default class Head extends Vue{
-  data() {
-    return {
-      showChoosePath: false
+  import PathList from './PathLis.vue'
+  import {
+    Component,
+    Vue
+  } from 'vue-property-decorator'
+  @Component({
+    components: {
+      PathList
     }
-  },
-  components: {
-    PathList
-  },
-  methods: {
+  })
+  export default class Head extends Vue {
+    showChoosePath: boolean = false
     showPath() {
       this.showChoosePath = !this.showChoosePath
-    },
-    choosePath(path) {
+    }
+    choosePath(path: string) {
       this.$emit('choosePath', path)
-    },
+    }
     showAddDialog() {
       this.$emit('showAddDialog')
-    },
+    }
     toDelete() {
       this.$emit('toDelete')
     }
+
   }
-}
 
 </script>
 

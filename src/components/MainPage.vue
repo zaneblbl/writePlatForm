@@ -24,51 +24,50 @@
   import AddDialog from './AddDialog.vue'
   import ContentEdit from './ContentEdit.vue'
 import {Component,Vue} from 'vue-property-decorator'
-@Component
-export default class MainPage extends Vue{
-    data() {
-      return {
-        token: '',
-        account: 'zaneblbl',
-        path: 'story/test', // story/test/test2.json
-        list: [],
-        isShowAddDialog: false,
-        maxId: 0,
-        content: '',
-        loading: false,
-        currentTitle: '',
-        currentId: '',
-        currentPath: ''
-      }
-    },
-    components: {
+@Component({
+        components: {
       ContentList,
       AddDialog,
       ContentEdit,
       Head
-    },
+    }
+})
+export default class MainPage extends Vue{
+            token:string= ''
+        account:string= 'zaneblbl'
+        path:string= 'story/test' // story/test/test2.json
+        list:any[]= []
+        isShowAddDialog:boolean= false
+        maxId: number=0
+        content: any=''
+        loading:boolean= false
+        currentTitle:string= ''
+        currentId: string=''
+        currentPath: string=''
+ 
+
     created() {
-      this.token = localStorage.getItem('token')
-      this.account = localStorage.getItem('account')
+      this.token = localStorage.getItem('token') || ''
+      this.account = localStorage.getItem('account')|| ''
       this.getlist()
-    },
-    methods: {
-      choosePath(path) {
+    }
+
+      choosePath(path:string) {
         this.path = 'story/' + path
         console.log(this.path)
 
         this.list = []
         this.getlist()
-      },
+      }
       getlist() {
-        githubOperate.getListFromGitHub(this.account, this.token, `${this.path}`).then(res => {
+        githubOperate.getListFromGitHub(this.account, this.token, `${this.path}`).then((res:any) => {
           this.list = res
           this.maxId = res.length
         })
-      },
-      add(title) {
+      }
+      add(title:string) {
         this.loading = true
-        let obj = {}
+        let obj:any = {}
         obj.id = this.maxId + 1
         obj.title = title
         obj.content = ''
@@ -83,7 +82,7 @@ export default class MainPage extends Vue{
           this.loading = false
           this.$message.error('添加失败')
         })
-      },
+      }
       toDelete() {
         this.loading = true
         githubOperate.DeleteFromGitHub(this.account, this.token, `${this.currentPath}`).then(res => {
@@ -97,10 +96,10 @@ export default class MainPage extends Vue{
           this.loading = false
           this.$message.error('删除失败')
         })
-      },
-      getContent(info) {
+      }
+      getContent(info:any) {
         this.loading = true
-        githubOperate.getFromGitHub(this.account, this.token, `story/${info.path}`).then(res => {
+        githubOperate.getFromGitHub(this.account, this.token, `story/${info.path}`).then((res:any) => {
           this.content = res
           let data = JSON.parse(res)
           this.currentTitle = data.title
@@ -108,10 +107,10 @@ export default class MainPage extends Vue{
           this.currentPath = `story/${info.path}`
           this.loading = false
         })
-      },
-      save(content) {
+      }
+      save(content:string) {
         this.loading = true
-        let obj = {}
+        let obj:any = {}
         obj.id = this.currentId
         obj.title = this.currentTitle
         obj.content = content
@@ -126,12 +125,12 @@ export default class MainPage extends Vue{
             this.loading = false
             this.$message.error('保存失败')
           })
-      },
+      }
       showAddDialog() {
         this.isShowAddDialog = !this.isShowAddDialog
       }
 
-    }
+    
   }
 
 </script>

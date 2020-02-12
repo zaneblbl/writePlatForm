@@ -16,46 +16,43 @@
 </template>
 
 <script lang='ts'>
-import githubOperate from '../common/githubOperate'
-import {Component,Vue} from 'vue-property-decorator'
-@Component
-export default class PathList extends Vue{
-  data() {
-    return {
-      list: [],
-      currentPath: '',
-      currentIndex: 0
+  import githubOperate from '../common/githubOperate'
+  import {
+    Component,
+    Vue
+  } from 'vue-property-decorator'
+  @Component
+  export default class PathList extends Vue {
+    list: any[] = []
+    currentPath: string = ''
+    currentIndex: number = 0
+    created() {
+      this.getlist()
     }
-  },
-  created() {
-    this.getlist()
-  },
-  methods: {
+
     getlist() {
-      let account = localStorage.getItem('account')
-      let token = localStorage.getItem('token')
+      let account = localStorage.getItem('account') || ''
+      let token = localStorage.getItem('token') || ''
       let path = `story/`
-      githubOperate.getListFromGitHub(account, token, `${path}`).then(res => {
+      githubOperate.getListFromGitHub(account, token, `${path}`).then((res: any) => {
         this.list = res
         this.currentPath = this.list[0].path
       })
-    },
-    choose(item, index) {
-      console.log(item)
-
+    }
+    choose(item: any, index: number) {
       this.currentPath = item.path
       this.currentIndex = index
-    },
+    }
     submit() {
       console.log(this.currentPath)
 
       this.$emit('submit', this.currentPath)
-    },
+    }
     close() {
       this.$emit('close')
     }
+
   }
-}
 
 </script>
 

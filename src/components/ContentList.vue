@@ -8,27 +8,31 @@
 </template>
 
 <script lang='ts'>
-import {Component,Vue} from 'vue-property-decorator'
-@Component
-export default class ContentList extends Vue{
-  props: ['list'],
-  data() {
-    return {
-      currentPath: '',
-      currentIndex: 0
+  import {
+    Component,
+    Vue,Prop
+  } from 'vue-property-decorator'
+//     @Component({
+//       props:{
+//           list: any[]
+//       }
+//   })
+  export default class ContentList extends Vue {
+    currentPath: string = ''
+    currentIndex: number = 0
+    @Prop()
+    list:any[]
+    created() {
+      this.editContent(this.list[0], 0)
     }
-  },
-  created() {
-    this.editContent(this.list[0], 0)
-  },
-  methods: {
-    editContent(item, index) {
+
+    editContent(item: any, index: number) {
       this.currentPath = item.path
       this.currentIndex = index
       this.$emit('editContent', item)
     }
+
   }
-}
 
 </script>
 
@@ -39,7 +43,8 @@ export default class ContentList extends Vue{
     display: flex;
     align-items: center;
     justify-content: center;
-    &:hover{
+
+    &:hover {
       opacity: 0.6;
     }
   }
@@ -58,7 +63,7 @@ export default class ContentList extends Vue{
 
     .uncheck {
       @include listItem;
-      color:rgb(117, 117, 117);
+      color: rgb(117, 117, 117);
       background: #dbdddf;
     }
   }

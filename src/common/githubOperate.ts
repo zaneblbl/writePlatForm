@@ -2,7 +2,7 @@ import common from './common'
 import axios from './axios'
 var operate = {
   // 增
-  addToGitHub(userName:string, accessToken:string, path:string, msg:any):Promise<any> {
+  addToGitHub(userName:string, accessToken:string, path:string, msg:any=null):Promise<any> {
     let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
     let params:any = {}
     return new Promise((resolve, reject) => {
@@ -13,9 +13,9 @@ var operate = {
       let json_params:string=''
       if(params!=null || params!=undefined){
         json_params=JSON.stringify(params)
-        axios('put', url, json_params).then(res => {
+        axios('put', url, json_params).then((res:any) => {
             resolve(res)
-          }, fail => {
+          }, (fail:any) => {
             reject(fail)
           })
       }
@@ -27,10 +27,10 @@ var operate = {
   getFromGitHub(userName:string, accessToken:string, path:string) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
-      axios('get', url).then(res => {
+      axios('get', url).then((res:any) => {
         let result = common.Base64.decode(res.content)
         resolve(result)
-      }, fail => {
+      }, (fail:any) => {
         reject(fail)
       })
     })
@@ -40,10 +40,10 @@ var operate = {
   getListFromGitHub(userName:string, accessToken:string, path:string) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
-      axios('get', url).then(res => {
+      axios('get', url).then((res:any) => {
         let result = res
         resolve(result)
-      }, fail => {
+      }, (fail:any) => {
         reject(fail)
       })
     })
@@ -53,7 +53,7 @@ var operate = {
   getShaFromGitHub(userName:string, accessToken:string, path:string) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
-      axios('get', url).then(res => {
+      axios('get', url).then((res:any) => {
         console.log(res);
         
           if(res.message=='Not Found'){
@@ -63,7 +63,7 @@ var operate = {
             resolve(result)
           }
 
-      }, fail => {
+      }, (fail:any) => {
         reject(fail)
       })
     })
@@ -72,7 +72,7 @@ var operate = {
   // 改
   UpdateToGitHub(userName:string, accessToken:string, path:string, msg:string) {
     let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
-    let params = {}
+    let params:any = {}
 
     return new Promise((resolve, reject) => {
       operate.getShaFromGitHub(userName, accessToken, path).then((data) => {
@@ -81,9 +81,9 @@ var operate = {
         params.message = 'upload note'
         // content内容需转成base64
         params.content = common.Base64.encode(JSON.stringify(msg))
-        axios('put', url, JSON.stringify(params)).then(res => {
+        axios('put', url, JSON.stringify(params)).then((res:any) => {
           resolve(res)
-        }, fail => {
+        }, (fail:any) => {
           console.log(fail);
           reject(fail)
         })
@@ -97,16 +97,16 @@ var operate = {
   DeleteFromGitHub(userName:string, accessToken:string, path:string) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
-      let params = {}
+      let params:any = {}
       operate.getShaFromGitHub(userName, accessToken, path).then((data) => {
         // // 需要获取文件sha
         params.sha = data
         params.message = 'delete note'
         url+=`&message=${params.message}&sha=${params.sha}`
         
-        axios('delete', url).then(res => {
+        axios('delete', url).then((res:any) => {
           resolve(res)
-        }, fail => {
+        }, (fail:any) => {
           console.log(fail);
           reject(fail)
         })

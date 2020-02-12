@@ -5,16 +5,16 @@ const instance = axios.create({
 })
 
 // 请求拦截
-instance.interceptors.request.use(function (config) {
+instance.interceptors.request.use(function (config:any) {
   return config
-}, error => {
+}, (error:any) => {
   return Promise.reject(error)
 })
 
 // 响应拦截
-instance.interceptors.response.use(response => {
+instance.interceptors.response.use((response:any) => {
   return response.data
-}, error => {
+}, (error:any) => {
   return Promise.reject(error)
 })
 

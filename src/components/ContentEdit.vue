@@ -9,31 +9,36 @@
 </template>
 
 <script lang='ts'>
-import {Component,Vue,Watch} from 'vue-property-decorator'
-@Component({
-    props:{
-        content:String
-    }
-})
-export default class ContentEdit extends Vue{
-nowContent:string= ''
-//   watch: {
-//     content(newValue, oldValue) {
-//       this.nowContent = JSON.parse(this.content).content
-//     }
-//   }
+  import {
+    Component,
+    Vue,
+    Watch,
+    Prop
+  } from 'vue-property-decorator'
+  @Component({
+      props:{
+          content:String
+      }
+  })
+  export default class ContentEdit extends Vue {
+    nowContent: string = ''
+    //   watch: {
+    //     content(newValue, oldValue) {
+    //       this.nowContent = JSON.parse(this.content).content
+    //     }
+    //   }
 
     @Watch('content')
-    content(newValue:any, oldValue:any):void {
-      this.nowContent = JSON.parse(this.content).content
+    content(newValue: string, oldValue: string): void {
+      this.nowContent = JSON.parse(newValue).content
     }
-  
+
 
     toSave() {
       this.$emit('save', this.nowContent)
     }
-  
-}
+
+  }
 
 </script>
 
@@ -53,7 +58,7 @@ nowContent:string= ''
       color: #000000;
       outline: none;
       resize: none;
-      border:none;
+      border: none;
 
     }
 
