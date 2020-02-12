@@ -1,25 +1,30 @@
-import common from './common.ts'
-import axios from './axios.ts'
+import common from './common'
+import axios from './axios'
 var operate = {
   // 增
-  addToGitHub(userName, accessToken, path, msg) {
+  addToGitHub(userName:string, accessToken:string, path:string, msg:any):Promise<any> {
     let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
-    let params = {}
+    let params:any = {}
     return new Promise((resolve, reject) => {
       // // 需要获取文件sha
       params.message = `create${msg['title']}`
       // content内容需转成base64
       params.content = common.Base64.encode(JSON.stringify(msg))
-      axios('put', url, JSON.stringify(params)).then(res => {
-        resolve(res)
-      }, fail => {
-        reject(fail)
-      })
+      let json_params:string=''
+      if(params!=null || params!=undefined){
+        json_params=JSON.stringify(params)
+        axios('put', url, json_params).then(res => {
+            resolve(res)
+          }, fail => {
+            reject(fail)
+          })
+      }
+
     })
 
   },
   // 查
-  getFromGitHub(userName, accessToken, path) {
+  getFromGitHub(userName:string, accessToken:string, path:string) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
       axios('get', url).then(res => {
@@ -32,7 +37,7 @@ var operate = {
 
   },
   // 查列表
-  getListFromGitHub(userName, accessToken, path) {
+  getListFromGitHub(userName:string, accessToken:string, path:string) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
       axios('get', url).then(res => {
@@ -45,7 +50,7 @@ var operate = {
 
   },
   // 获取sha
-  getShaFromGitHub(userName, accessToken, path) {
+  getShaFromGitHub(userName:string, accessToken:string, path:string) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
       axios('get', url).then(res => {
@@ -65,7 +70,7 @@ var operate = {
 
   },
   // 改
-  UpdateToGitHub(userName, accessToken, path, msg) {
+  UpdateToGitHub(userName:string, accessToken:string, path:string, msg:string) {
     let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
     let params = {}
 
@@ -89,7 +94,7 @@ var operate = {
     })
   },
   // 删
-  DeleteFromGitHub(userName, accessToken, path) {
+  DeleteFromGitHub(userName:string, accessToken:string, path:string) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0, path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
       let params = {}

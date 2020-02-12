@@ -10,24 +10,22 @@
 </template>
 
 <script lang='ts'>
-import {Component,Vue} from 'vue-property-decorator'
-@Component
-export default class AddDialog extends Vue{
-  data() {
-    return {
-      title: ''
-    }
-  },
-  methods: {
+  import {
+    Component,
+    Vue
+  } from 'vue-property-decorator'
+  @Component
+  export default class AddDialog extends Vue {
+    title: string = ''
     submit() {
       this.$emit('addToGithub', this.title)
       this.$emit('close', this.title)
-    },
+    }
     close() {
       this.$emit('close', this.title)
     }
+
   }
-}
 
 </script>
 

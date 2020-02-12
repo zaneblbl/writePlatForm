@@ -9,25 +9,30 @@
 </template>
 
 <script lang='ts'>
-import {Component,Vue} from 'vue-property-decorator'
-@Component
-export default class AddDialog extends Vue{
-  props: ['content'],
-  data() {
-    return {
-      nowContent: ''
+import {Component,Vue,Watch} from 'vue-property-decorator'
+@Component({
+    props:{
+        content:String
     }
-  },
-  watch: {
-    content(newValue, oldValue) {
+})
+export default class ContentEdit extends Vue{
+nowContent:string= ''
+//   watch: {
+//     content(newValue, oldValue) {
+//       this.nowContent = JSON.parse(this.content).content
+//     }
+//   }
+
+    @Watch('content')
+    content(newValue:any, oldValue:any):void {
       this.nowContent = JSON.parse(this.content).content
     }
-  },
-  methods: {
+  
+
     toSave() {
       this.$emit('save', this.nowContent)
     }
-  }
+  
 }
 
 </script>

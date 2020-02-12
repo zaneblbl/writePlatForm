@@ -16,10 +16,10 @@
 </template>
 
 <script lang='ts'>
-import githubOperate from '../common/githubOperate.ts'
+import githubOperate from '../common/githubOperate'
 import {Component,Vue} from 'vue-property-decorator'
 @Component
-export default class AddDialog extends Vue{
+export default class PathList extends Vue{
   data() {
     return {
       list: [],

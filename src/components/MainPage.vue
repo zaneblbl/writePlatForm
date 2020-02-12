@@ -20,12 +20,12 @@
   // import common from '../common/common'
   import Head from './Head.vue'
   import ContentList from './ContentList.vue'
-  import githubOperate from '../common/githubOperate.ts'
+  import githubOperate from '../common/githubOperate'
   import AddDialog from './AddDialog.vue'
   import ContentEdit from './ContentEdit.vue'
 import {Component,Vue} from 'vue-property-decorator'
 @Component
-export default class AddDialog extends Vue{
+export default class MainPage extends Vue{
     data() {
       return {
         token: '',

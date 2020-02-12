@@ -18,7 +18,7 @@ instance.interceptors.response.use(response => {
   return Promise.reject(error)
 })
 
-export default function (method, url, data = null) {
+export default function (method:string, url:string, data:any=null) {
   method = method.toLowerCase()
   if (method === 'post') {
     return instance.post(url, data)
@@ -30,6 +30,6 @@ export default function (method, url, data = null) {
     return instance.delete(url)
   } else {
     console.log('未知的method')
-    return false
+    return Promise.reject('未知的method')
   }
 }

@@ -12,7 +12,7 @@
 import PathList from './PathLis.vue'
 import {Component,Vue} from 'vue-property-decorator'
 @Component
-export default class AddDialog extends Vue{
+export default class Head extends Vue{
   data() {
     return {
       showChoosePath: false

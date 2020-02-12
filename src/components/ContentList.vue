@@ -10,7 +10,7 @@
 <script lang='ts'>
 import {Component,Vue} from 'vue-property-decorator'
 @Component
-export default class AddDialog extends Vue{
+export default class ContentList extends Vue{
   props: ['list'],
   data() {
     return {
