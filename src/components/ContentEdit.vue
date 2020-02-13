@@ -15,21 +15,14 @@
     Watch,
     Prop
   } from 'vue-property-decorator'
-  @Component({
-      props:{
-          content:String
-      }
-  })
+  @Component
   export default class ContentEdit extends Vue {
     nowContent: string = ''
-    //   watch: {
-    //     content(newValue, oldValue) {
-    //       this.nowContent = JSON.parse(this.content).content
-    //     }
-    //   }
+    @Prop()
+    content:string=''
 
     @Watch('content')
-    content(newValue: string, oldValue: string): void {
+    getContent(newValue: string, oldValue: string): void {
       this.nowContent = JSON.parse(newValue).content
     }
 

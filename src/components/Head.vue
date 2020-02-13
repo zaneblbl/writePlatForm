@@ -9,7 +9,7 @@
 </template>
 
 <script lang='ts'>
-  import PathList from './PathLis.vue'
+  import PathList from './PathList.vue'
   import {
     Component,
     Vue

@@ -1,4 +1,3 @@
-
 <template>
   <div class='MainPage'>
 
@@ -23,114 +22,117 @@
   import githubOperate from '../common/githubOperate'
   import AddDialog from './AddDialog.vue'
   import ContentEdit from './ContentEdit.vue'
-import {Component,Vue} from 'vue-property-decorator'
-@Component({
-        components: {
+  import {
+    Component,
+    Vue
+  } from 'vue-property-decorator'
+  @Component({
+    components: {
       ContentList,
       AddDialog,
       ContentEdit,
       Head
     }
-})
-export default class MainPage extends Vue{
-            token:string= ''
-        account:string= 'zaneblbl'
-        path:string= 'story/test' // story/test/test2.json
-        list:any[]= []
-        isShowAddDialog:boolean= false
-        maxId: number=0
-        content: any=''
-        loading:boolean= false
-        currentTitle:string= ''
-        currentId: string=''
-        currentPath: string=''
- 
+  })
+  export default class MainPage extends Vue {
+    token: string = ''
+    account: string = 'zaneblbl'
+    path: string = 'story/test' // story/test/test2.json
+    list: any[] = []
+    isShowAddDialog: boolean = false
+    maxId: number = 0
+    content: any = ''
+    loading: boolean = false
+    currentTitle: string = ''
+    currentId: string = ''
+    currentPath: string = ''
+
 
     created() {
       this.token = localStorage.getItem('token') || ''
-      this.account = localStorage.getItem('account')|| ''
+      this.account = localStorage.getItem('account') || ''
       this.getlist()
     }
 
-      choosePath(path:string) {
-        this.path = 'story/' + path
-        console.log(this.path)
+    choosePath(path: string) {
+      this.path = 'story/' + path
+      console.log(this.path)
 
-        this.list = []
+      this.list = []
+      this.getlist()
+    }
+    getlist() {
+      githubOperate.getListFromGitHub(this.account, this.token, `${this.path}`).then((res: any) => {
+        this.list = res
+        this.maxId = res.length
+      })
+    }
+    add(title: string) {
+      this.loading = true
+      let obj: any = {}
+      obj.id = this.maxId + 1
+      obj.title = title
+      obj.content = ''
+      githubOperate.addToGitHub(this.account, this.token, `${this.path}/${title}-${obj.id}.json`, obj).then(res => {
+        this.$message({
+          message: '添加成功',
+          type: 'success'
+        })
         this.getlist()
-      }
-      getlist() {
-        githubOperate.getListFromGitHub(this.account, this.token, `${this.path}`).then((res:any) => {
-          this.list = res
-          this.maxId = res.length
+        this.loading = false
+      }, e => {
+        this.loading = false
+        this.$message.error('添加失败')
+      })
+    }
+    toDelete() {
+      this.loading = true
+      githubOperate.DeleteFromGitHub(this.account, this.token, `${this.currentPath}`).then(res => {
+        this.$message({
+          message: '删除成功',
+          type: 'success'
         })
-      }
-      add(title:string) {
-        this.loading = true
-        let obj:any = {}
-        obj.id = this.maxId + 1
-        obj.title = title
-        obj.content = ''
-        githubOperate.addToGitHub(this.account, this.token, `${this.path}/${title}-${obj.id}.json`, obj).then(res => {
+        this.getlist()
+        this.loading = false
+      }, e => {
+        this.loading = false
+        this.$message.error('删除失败')
+      })
+    }
+    getContent(info: any) {
+      this.loading = true
+      githubOperate.getFromGitHub(this.account, this.token, `story/${info.path}`).then((res: any) => {
+        this.content = res
+        let data = JSON.parse(res)
+        this.currentTitle = data.title
+        this.currentId = data.id
+        this.currentPath = `story/${info.path}`
+        this.loading = false
+      })
+    }
+    save(content: string) {
+      this.loading = true
+      let obj: any = {}
+      obj.id = this.currentId
+      obj.title = this.currentTitle
+      obj.content = content
+      githubOperate.UpdateToGitHub(this.account, this.token, `${this.path}/${obj.title}-${obj.id}.json`, obj).then(
+        res => {
+          this.loading = false
           this.$message({
-            message: '添加成功',
+            message: '保存成功',
             type: 'success'
           })
-          this.getlist()
-          this.loading = false
         }, e => {
           this.loading = false
-          this.$message.error('添加失败')
+          this.$message.error('保存失败')
         })
-      }
-      toDelete() {
-        this.loading = true
-        githubOperate.DeleteFromGitHub(this.account, this.token, `${this.currentPath}`).then(res => {
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-          this.getlist()
-          this.loading = false
-        }, e => {
-          this.loading = false
-          this.$message.error('删除失败')
-        })
-      }
-      getContent(info:any) {
-        this.loading = true
-        githubOperate.getFromGitHub(this.account, this.token, `story/${info.path}`).then((res:any) => {
-          this.content = res
-          let data = JSON.parse(res)
-          this.currentTitle = data.title
-          this.currentId = data.id
-          this.currentPath = `story/${info.path}`
-          this.loading = false
-        })
-      }
-      save(content:string) {
-        this.loading = true
-        let obj:any = {}
-        obj.id = this.currentId
-        obj.title = this.currentTitle
-        obj.content = content
-        githubOperate.UpdateToGitHub(this.account, this.token, `${this.path}/${obj.title}-${obj.id}.json`, obj).then(
-          res => {
-            this.loading = false
-            this.$message({
-              message: '保存成功',
-              type: 'success'
-            })
-          }, e => {
-            this.loading = false
-            this.$message.error('保存失败')
-          })
-      }
-      showAddDialog() {
-        this.isShowAddDialog = !this.isShowAddDialog
-      }
+    }
+    showAddDialog() {
+      this.isShowAddDialog = !this.isShowAddDialog
+    }
 
-    
+
   }
 
 </script>

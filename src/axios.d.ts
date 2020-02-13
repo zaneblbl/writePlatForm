@@ -2,6 +2,6 @@ import * as axios from 'axios'
 
 declare module 'axios' {
   interface AxiosInstance {
-    (config: AxiosRequestConfig): Promise<any>
+    (config: AxiosRequestConfig): Promise < any >
   }
 }

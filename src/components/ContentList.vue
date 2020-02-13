@@ -10,18 +10,15 @@
 <script lang='ts'>
   import {
     Component,
-    Vue,Prop
+    Vue,
+    Prop
   } from 'vue-property-decorator'
-//     @Component({
-//       props:{
-//           list: any[]
-//       }
-//   })
+  @Component
   export default class ContentList extends Vue {
     currentPath: string = ''
     currentIndex: number = 0
     @Prop()
-    list:any[]
+    list: any[]
     created() {
       this.editContent(this.list[0], 0)
     }

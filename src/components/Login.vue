@@ -18,13 +18,13 @@
   } from 'vue-property-decorator'
   @Component
   export default class Login extends Vue {
-    tokenValue:string = ''
-    loading:boolean = false
-    loginText:string = ''
+    tokenValue: string = ''
+    loading: boolean = false
+    loginText: string = ''
 
     created() {
       if (localStorage.getItem('token')) {
-        this.tokenValue = localStorage.getItem('token')||''
+        this.tokenValue = localStorage.getItem('token') || ''
       }
     }
 

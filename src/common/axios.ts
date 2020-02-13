@@ -5,25 +5,27 @@ const instance = axios.create({
 })
 
 // 请求拦截
-instance.interceptors.request.use(function (config:any) {
+instance.interceptors.request.use(function (config: any) {
   return config
-}, (error:any) => {
+}, (error: any) => {
   return Promise.reject(error)
 })
 
 // 响应拦截
-instance.interceptors.response.use((response:any) => {
+instance.interceptors.response.use((response: any) => {
   return response.data
-}, (error:any) => {
+}, (error: any) => {
   return Promise.reject(error)
 })
 
-export default function (method:string, url:string, data:any=null) {
+export default function (method: string, url: string, data: any = null) {
   method = method.toLowerCase()
   if (method === 'post') {
     return instance.post(url, data)
   } else if (method === 'get') {
-    return instance.get(url, {params: data})
+    return instance.get(url, {
+      params: data
+    })
   } else if (method === 'put') {
     return instance.put(url, data)
   } else if (method === 'delete') {
