@@ -1,8 +1,15 @@
 <template>
   <div class='PathList'>
     <div class='cover' @click='close'></div>
+    <!-- 内容 -->
     <div class='content'>
       <div class='content__item'>
+        <!-- 添加 -->
+        <div class='addList'>
+          <input type="text" class='list__input' v-model='list__input__value'>
+          <button  @click='addPathlist'>添加</button>
+        </div>
+        <!-- 列表 -->
         <div v-for="(item,index) in list" :key="index" @click='choose(item,index)'
           :class="index==currentIndex?'check':'uncheck'">
           {{item.name}}
@@ -19,24 +26,32 @@
   import githubOperate from '../common/githubOperate'
   import {
     Component,
-    Vue
+    Vue,
+    Prop
   } from 'vue-property-decorator'
   @Component
   export default class PathList extends Vue {
+    @Prop()
+    path: string
     list: any[] = []
     currentPath: string = ''
     currentIndex: number = 0
+    list__input__value:string=''
     created() {
       this.getlist()
     }
+    addPathlist() {
+      console.log(this.list__input__value);
 
+    }
     getlist() {
       let account = localStorage.getItem('account') || ''
       let token = localStorage.getItem('token') || ''
-      let path = `story/`
-      githubOperate.getListFromGitHub(account, token, `${path}`).then((res: any) => {
-        this.list = res
-        this.currentPath = this.list[0].path
+      githubOperate.getListFromGitHub(account, token, `${this.path}`).then((res: any) => {
+        if (res.length) {
+          this.list = res
+          this.currentPath = this.list[0].path
+        }
       })
     }
     choose(item: any, index: number) {
@@ -89,6 +104,8 @@
     top: 0;
     position:fixed;
 
+
+
     .content {
       z-index: 1001;
       background: #fff;
@@ -100,6 +117,21 @@
       .content__item {
         display: flex;
         flex-direction: column;
+        .addList{
+            >input{
+                width:100px;
+            }
+            >button{
+                        background: linear-gradient(90deg, #ffed5c, #ffce06);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 5px;
+        padding: 10px;
+        color: #161616;
+
+            }
+        }
 
         >span {
           margin-right: 10px;

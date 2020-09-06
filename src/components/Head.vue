@@ -1,10 +1,10 @@
 <template>
   <div class='Head'>
-    <div class='chooseBtn' @click='showPath'></div>
-    <div class='addBtn' @click='showAddDialog'></div>
-    <div class='deleteBtn' @click='toDelete'></div>
+    <div class='chooseBtn' @click='showPath' title='文章列表'></div>
+    <div class='addBtn' @click='showAddDialog' title='添加章节'></div>
+    <div class='deleteBtn' @click='toDelete' title='删除章节'></div>
 
-    <PathList v-if='showChoosePath' @close='showPath' @submit='choosePath'></PathList>
+    <PathList v-if='showChoosePath' @close='showPath' @submit='choosePath' :path='path'></PathList>
   </div>
 </template>
 
@@ -12,7 +12,8 @@
   import PathList from './PathList.vue'
   import {
     Component,
-    Vue
+    Vue,
+    Prop
   } from 'vue-property-decorator'
   @Component({
     components: {
@@ -20,6 +21,8 @@
     }
   })
   export default class Head extends Vue {
+    @Prop()
+    path: string
     showChoosePath: boolean = false
     showPath() {
       this.showChoosePath = !this.showChoosePath

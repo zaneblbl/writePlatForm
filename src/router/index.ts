@@ -3,7 +3,7 @@ import Router,{ RouteConfig, Route, NavigationGuard } from 'vue-router'
 // import MainPage:AsyncComponent =():any=> import('@/components/MainPage.vue')
 // import Login :AsyncComponent =():any=> import( '@/components/Login.vue')
 import MainPage from '@/components/MainPage.vue'
-import Login from '@/components/Login.vue'
+import Login from '@/components/LoginMain.vue'
 Vue.use(Router)
 
 export default new Router({

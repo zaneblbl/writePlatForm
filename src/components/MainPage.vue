@@ -1,7 +1,7 @@
 <template>
   <div class='MainPage'>
 
-    <Head @toDelete='toDelete' @showAddDialog='showAddDialog' @choosePath='choosePath'></Head>
+    <Head @toDelete='toDelete' @showAddDialog='showAddDialog' @choosePath='choosePath' :path='path'></Head>
     <div class='mainbox'>
 
       <ContentList :list="list" @editContent='getContent' v-if='list.length'></ContentList>
@@ -37,7 +37,7 @@
   export default class MainPage extends Vue {
     token: string = ''
     account: string = 'zaneblbl'
-    path: string = 'story/test' // story/test/test2.json
+    path: string = 'story/' // story/test/test2.json
     list: any[] = []
     isShowAddDialog: boolean = false
     maxId: number = 0
@@ -53,9 +53,8 @@
       this.account = localStorage.getItem('account') || ''
       this.getlist()
     }
-
     choosePath(path: string) {
-      this.path = 'story/' + path
+      this.path = path
       console.log(this.path)
 
       this.list = []
@@ -63,6 +62,8 @@
     }
     getlist() {
       githubOperate.getListFromGitHub(this.account, this.token, `${this.path}`).then((res: any) => {
+        console.log(res);
+
         this.list = res
         this.maxId = res.length
       })
@@ -101,12 +102,16 @@
     }
     getContent(info: any) {
       this.loading = true
-      githubOperate.getFromGitHub(this.account, this.token, `story/${info.path}`).then((res: any) => {
+      console.log(info);
+
+      githubOperate.getFromGitHub(this.account, this.token, `${this.path}${info.path}`).then((res: any) => {
+        console.log(res);
+
         this.content = res
         let data = JSON.parse(res)
         this.currentTitle = data.title
         this.currentId = data.id
-        this.currentPath = `story/${info.path}`
+        this.currentPath = `${this.path}${info.path}`
         this.loading = false
       })
     }
