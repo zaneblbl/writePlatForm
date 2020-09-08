@@ -5,7 +5,7 @@
         <el-input type="text" v-model='clientID' class='item__input'></el-input>
       </div>
       <div class='item'><span>clientSecret: </span>
-      <el-input type="text" v-model='clientSecret' class='item__input'></el-input>
+        <el-input type="text" v-model='clientSecret' class='item__input'></el-input>
       </div>
 
       <div @click='init' class='login'>登录</div>
@@ -22,15 +22,19 @@
   } from 'vue-property-decorator'
   @Component
   export default class Login extends Vue {
-    clientID: string = ''
-    clientSecret: string = ''
+    clientID: string = '3d3b51cea6b8867e0f2c'
+    clientSecret: string = '9a9c5abf88dee6622b7175bdfae6567f002f9ef3'
     access_token: string = ''
     loading: boolean = false
     loginText: string = ''
 
     created() {
-      // this.init()
+      let code = common.getQueryVariable(window.location.href, 'code')
+      if (code) {
+        this.init()
+      }
     }
+
     init() {
       let self = this
       // 获取clientID和clientSecret
@@ -40,34 +44,24 @@
           path: `/MainPage`
         })
       } else {
-        if (window.location.href.indexOf(`https://zaneblbl.github.io/z-plug`) != -1) {
-          self.loginListener(self.clientID, self.clientSecret)
-        }
-        // else {
-        //   let loginBtn = document.createElement('a')
-        //   loginBtn.id = 'zPlug__login__btn'
-        //   loginBtn.classList.add('zPlug__login__btn')
-        //   loginBtn.innerHTML = `<div>Login</div>`
-        //   loginBtn.href = `https://zaneblbl.github.io/z-plug/`
-        //   window.document.body.appendChild(loginBtn);
-        // }
+        self.loginListener(self.clientID, self.clientSecret)
       }
 
 
     }
-    toLogin(param:any) {
+    toLogin(param: any) {
       let self = this
       axios('get',
         `https://github.com/login/oauth/access_token?client_id=${param.clientID}&client_secret=${param.clientSecret}&code=${param.code}`
-      ).then((res:any) => {
+      ).then((res: any) => {
         let token = common.getQueryVariable(res, 'access_token') || ''
         localStorage.setItem('access_token', token)
       })
 
     }
-    loginListener(clientID:string, clientSecret:string) {
+    loginListener(clientID: string, clientSecret: string) {
       let url = `https://github.com/login/oauth/authorize?client_id=${clientID}`
-      let code = common.getQueryVariable(window.location.href,'code')
+      let code = common.getQueryVariable(window.location.href, 'code')
       if (code) {
         let param = {
           'clientID': clientID,
