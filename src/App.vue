@@ -1,116 +1,28 @@
 <template>
-  <keep-alive>
-    <router-view></router-view>
-  </keep-alive>
+  <div id="app">
+    <img alt="Vue logo" src="./assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  </div>
 </template>
 
-<script lang='ts'>
-  import {
-    Component,
-    Vue,
-    Watch
-  } from 'vue-property-decorator'
+<script>
+import HelloWorld from './components/HelloWorld.vue'
 
-  @Component
-  export default class App extends Vue {}
-
+export default {
+  name: 'App',
+  components: {
+    HelloWorld
+  }
+}
 </script>
 
 <style>
-  body,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6,
-  hr,
-  p,
-  blockquote,
-  dl,
-  dt,
-  dd,
-  ul,
-  ol,
-  li,
-  pre,
-  form,
-  fieldset,
-  legend,
-  button,
-  input,
-  textarea,
-  th,
-  td,
-  div {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  body,
-  button,
-  input,
-  select,
-  textarea {
-    font-size: 14px;
-  }
-
-  address,
-  cite,
-  dfn,
-  em,
-  var {
-    font-style: normal;
-  }
-
-  code,
-  kbd,
-  pre,
-  samp {
-    font-family: couriernew, courier, monospace;
-  }
-
-  ul,
-  ol {
-    list-style: none;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  a:hover {
-    text-decoration: underline;
-  }
-
-  sup {
-    vertical-align: text-top;
-  }
-
-  sub {
-    vertical-align: text-bottom;
-  }
-
-  legend {
-    color: #000;
-  }
-
-  fieldset,
-  img {
-    border: 0;
-  }
-
-  button,
-  input,
-  select,
-  textarea {
-    font-size: 100%;
-  }
-
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
-
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 </style>

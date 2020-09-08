@@ -1,10 +1,24 @@
-# writePlatForm
-write platform
-# github api
-https://segmentfault.com/a/1190000015144126?utm_source=tag-newest
+# write
 
-# 注意
-personal access token 不能放在文件中，上传会被删除
+## Project setup
+```
+npm install
+```
 
-# typescript问题
-axios返回值问题：添加axios.d.ts
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).

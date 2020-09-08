@@ -1,5 +1,5 @@
-import Vue,{AsyncComponent} from 'vue'
-import Router,{ RouteConfig, Route, NavigationGuard } from 'vue-router'
+import Vue from 'vue'
+import Router from 'vue-router'
 // import MainPage:AsyncComponent =():any=> import('@/components/MainPage.vue')
 // import Login :AsyncComponent =():any=> import( '@/components/Login.vue')
 import MainPage from '@/components/MainPage.vue'
