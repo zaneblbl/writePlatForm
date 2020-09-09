@@ -7,7 +7,7 @@
         <!-- 添加 -->
         <div class='addList'>
           <input type="text" class='list__input' v-model='list__input__value'>
-          <button  @click='addPathlist'>添加</button>
+          <button @click='addPathlist'>添加</button>
         </div>
         <!-- 列表 -->
         <div v-for="(item,index) in list" :key="index" @click='choose(item,index)'
@@ -22,53 +22,44 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script>
   import githubOperate from '../common/githubOperate'
-  import {
-    Component,
-    Vue,
-    Prop
-  } from 'vue-property-decorator'
-  @Component
-  export default class PathList extends Vue {
-    @Prop()
-    path: string
-    list: any[] = []
-    currentPath: string = ''
-    currentIndex: number = 0
-    list__input__value:string=''
+  export default {
+    props: ['path', 'list', 'currentPath', 'currentIndex', 'list__input__value'],
     created() {
       this.getlist()
-    }
-    addPathlist() {
-      console.log(this.list__input__value);
+    },
+    methods: {
+      addPathlist() {
+        console.log(this.list__input__value);
 
-    }
-    getlist() {
-      let account = localStorage.getItem('account') || ''
-      let token = localStorage.getItem('token') || ''
-      githubOperate.getListFromGitHub(account, token, `${this.path}`).then((res: any) => {
-        if (res.length) {
-          this.list = res
-          this.currentPath = this.list[0].path
-        }
-      })
-    }
-    choose(item: any, index: number) {
-      this.currentPath = item.path
-      this.currentIndex = index
-    }
-    submit() {
-      console.log(this.currentPath)
+      },
+      getlist() {
+        let account = localStorage.getItem('account') || ''
+        let token = localStorage.getItem('token') || ''
+        githubOperate.getListFromGitHub(account, token, `${this.path}`).then((res) => {
+          if (res.length) {
+            this.list = res
+            this.currentPath = this.list[0].path
+          }
+        })
+      },
+      choose(item, index) {
+        this.currentPath = item.path
+        this.currentIndex = index
+      },
+      submit() {
+        console.log(this.currentPath)
 
-      this.$emit('submit', this.currentPath)
-    }
-    close() {
-      this.$emit('close')
+        this.$emit('submit', this.currentPath)
+      },
+      close() {
+        this.$emit('close')
+      }
+
     }
 
   }
-
 </script>
 
 <style lang='scss'>
@@ -117,20 +108,22 @@
       .content__item {
         display: flex;
         flex-direction: column;
-        .addList{
-            >input{
-                width:100px;
-            }
-            >button{
-                        background: linear-gradient(90deg, #ffed5c, #ffce06);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 5px;
-        padding: 10px;
-        color: #161616;
 
-            }
+        .addList {
+          >input {
+            width: 100px;
+          }
+
+          >button {
+            background: linear-gradient(90deg, #ffed5c, #ffce06);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            padding: 10px;
+            color: #161616;
+
+          }
         }
 
         >span {
@@ -163,5 +156,4 @@
       background: #dbdddf;
     }
   }
-
 </style>

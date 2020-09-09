@@ -13,69 +13,70 @@
   </div>
 </template>
 
-<script lang='ts'>
-  import axios from '../common/axios'
-  import common from '../common/common'
-  import {
-    Component,
-    Vue
-  } from 'vue-property-decorator'
-  @Component
-  export default class Login extends Vue {
-    clientID: string = '3d3b51cea6b8867e0f2c'
-    clientSecret: string = '9a9c5abf88dee6622b7175bdfae6567f002f9ef3'
-    access_token: string = ''
-    loading: boolean = false
-    loginText: string = ''
+<script>
+  import axios from '@common/axios'
+  import common from '@common/common'
+  export default {
+    data() {
+      return {
+        clientID: '3d3b51cea6b8867e0f2c',
+        clientSecret: '9a9c5abf88dee6622b7175bdfae6567f002f9ef3',
+        access_token: '',
+        loading: false,
+        loginText: ''
+      }
+    },
+
 
     created() {
       let code = common.getQueryVariable(window.location.href, 'code')
       if (code) {
         this.init()
       }
-    }
-
-    init() {
-      let self = this
-      // 获取clientID和clientSecret
-      this.access_token = localStorage.getItem('access_token') || ''
-      if (this.access_token) {
-        self.$router.push({
-          path: `/MainPage`
-        })
-      } else {
-        self.loginListener(self.clientID, self.clientSecret)
-      }
-
-
-    }
-    toLogin(param: any) {
-      let self = this
-      axios('get',
-        `https://github.com/login/oauth/access_token?client_id=${param.clientID}&client_secret=${param.clientSecret}&code=${param.code}`
-      ).then((res: any) => {
-        let token = common.getQueryVariable(res, 'access_token') || ''
-        localStorage.setItem('access_token', token)
-      })
-
-    }
-    loginListener(clientID: string, clientSecret: string) {
-      let url = `https://github.com/login/oauth/authorize?client_id=${clientID}`
-      let code = common.getQueryVariable(window.location.href, 'code')
-      if (code) {
-        let param = {
-          'clientID': clientID,
-          'clientSecret': clientSecret,
-          'code': code
+    },
+    methods: {
+      init() {
+        let self = this
+        // 获取clientID和clientSecret
+        this.access_token = localStorage.getItem('access_token') || ''
+        if (this.access_token) {
+          self.$router.push({
+            path: `/MainPage`
+          })
+        } else {
+          self.loginListener(self.clientID, self.clientSecret)
         }
-        this.toLogin(param)
-      } else {
-        // github第三方授权登录后返回回调页面带回code
-        window.location.href = url
+
+
+      },
+      toLogin(param) {
+        axios('get',
+          `https://github.com/login/oauth/access_token?client_id=${param.clientID}&client_secret=${param.clientSecret}&code=${param.code}`
+        ).then((res) => {
+          let token = common.getQueryVariable(res, 'access_token') || ''
+          localStorage.setItem('access_token', token)
+        })
+
+      },
+      loginListener(clientID, clientSecret) {
+        let url = `https://github.com/login/oauth/authorize?client_id=${clientID}`
+        let code = common.getQueryVariable(window.location.href, 'code')
+        if (code) {
+          let param = {
+            'clientID': clientID,
+            'clientSecret': clientSecret,
+            'code': code
+          }
+          this.toLogin(param)
+        } else {
+          // github第三方授权登录后返回回调页面带回code
+          window.location.href = url
+        }
       }
     }
-  }
 
+
+  }
 </script>
 
 <style lang="scss">
@@ -127,5 +128,4 @@
       }
     }
   }
-
 </style>

@@ -8,37 +8,35 @@
   </div>
 </template>
 
-<script lang='ts'>
+<script>
   import PathList from './PathList.vue'
-  import {
-    Component,
-    Vue,
-    Prop
-  } from 'vue-property-decorator'
-  @Component({
-    components: {
+  export default {
+    props: ['path', 'showChoosePath'],
+    data(){
+      return {
+
+      }
+    },
+    components:{
       PathList
+    },
+    methods: {
+      showPath() {
+        this.showChoosePath = !this.showChoosePath
+      },
+      choosePath(path) {
+        this.$emit('choosePath', path)
+      },
+      showAddDialog() {
+        this.$emit('showAddDialog')
+      },
+      toDelete() {
+        this.$emit('toDelete')
+      }
     }
-  })
-  export default class Head extends Vue {
-    @Prop()
-    path: string
-    showChoosePath: boolean = false
-    showPath() {
-      this.showChoosePath = !this.showChoosePath
-    }
-    choosePath(path: string) {
-      this.$emit('choosePath', path)
-    }
-    showAddDialog() {
-      this.$emit('showAddDialog')
-    }
-    toDelete() {
-      this.$emit('toDelete')
-    }
+
 
   }
-
 </script>
 
 <style lang='scss'>
@@ -75,5 +73,4 @@
       background-image: url('../assets/image/choose.png')
     }
   }
-
 </style>

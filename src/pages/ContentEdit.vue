@@ -8,31 +8,26 @@
   </div>
 </template>
 
-<script lang='ts'>
-  import {
-    Component,
-    Vue,
-    Watch,
-    Prop
-  } from 'vue-property-decorator'
-  @Component
-  export default class ContentEdit extends Vue {
-    nowContent: string = ''
-    @Prop()
-    content:string=''
-
-    @Watch('content')
-    getContent(newValue: string, oldValue: string): void {
-      this.nowContent = JSON.parse(newValue).content
+<script>
+  export default {
+    data() {
+      return {
+        nowContent: '',
+        content: ''
+      }
+    },
+    watch: {
+      getContent(newValue, oldValue) {
+        if(newValue!=oldValue) return
+        this.nowContent = JSON.parse(newValue).content
+      }
+    },
+    methods: {
+      toSave() {
+        this.$emit('save', this.nowContent)
+      }
     }
-
-
-    toSave() {
-      this.$emit('save', this.nowContent)
-    }
-
   }
-
 </script>
 
 <style lang='scss'>
@@ -83,5 +78,4 @@
       }
     }
   }
-
 </style>

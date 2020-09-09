@@ -2,7 +2,7 @@ var common = {
   // 字符串转base64
   Base64: {
     _keyStr: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
-    encode: function (e: any) {
+    encode: function (e) {
       var t = ''
       var n, r, i, s, o, u, a
       var f = 0
@@ -24,7 +24,7 @@ var common = {
       }
       return t
     },
-    decode: function (e: any) {
+    decode: function (e) {
       var t = ''
       var n, r, i
       var s, o, u, a
@@ -49,7 +49,7 @@ var common = {
       t = common.Base64._utf8_decode(t)
       return t
     },
-    _utf8_encode: function (e: any) {
+    _utf8_encode: function (e) {
       e = e.replace(/rn/g, 'n')
       var t = ''
       for (var n = 0; n < e.length; n++) {
@@ -67,7 +67,7 @@ var common = {
       }
       return t
     },
-    _utf8_decode: function (e: any) {
+    _utf8_decode: function (e) {
       var t = ''
       var n = 0
       var r = 0
@@ -92,7 +92,7 @@ var common = {
       return t
     }
   },
-  getQueryVariable(string:string,variable:string) {
+  getQueryVariable(string,variable) {
     var query = string || window.location.href
     var vars = query.split('&')
     for (var i = 0; i < vars.length; i++) {

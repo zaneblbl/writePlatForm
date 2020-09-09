@@ -7,30 +7,29 @@
   </div>
 </template>
 
-<script lang='ts'>
-  import {
-    Component,
-    Vue,
-    Prop
-  } from 'vue-property-decorator'
-  @Component
-  export default class ContentList extends Vue {
-    currentPath: string = ''
-    currentIndex: number = 0
-    @Prop()
-    list: any[]
+<script>
+  export default {
+    props: ['list'],
+    data() {
+      return {
+        currentPath: '',
+        currentIndex: 0
+      }
+    },
     created() {
       this.editContent(this.list[0], 0)
+    },
+    methods: {
+
+      editContent(item, index) {
+        this.currentPath = item.path
+        this.currentIndex = index
+        this.$emit('editContent', item)
+      }
     }
 
-    editContent(item: any, index: number) {
-      this.currentPath = item.path
-      this.currentIndex = index
-      this.$emit('editContent', item)
-    }
 
   }
-
 </script>
 
 <style lang='scss'>
@@ -64,5 +63,4 @@
       background: #dbdddf;
     }
   }
-
 </style>

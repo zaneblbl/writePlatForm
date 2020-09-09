@@ -1,4 +1,4 @@
-# write
+# plate
 
 ## Project setup
 ```
