@@ -37,6 +37,7 @@
     methods: {
       init() {
         let self = this
+        console.log(this.access_token);
         // 获取clientID和clientSecret
         this.access_token = localStorage.getItem('access_token') || ''
         if (this.access_token) {
@@ -50,9 +51,11 @@
 
       },
       toLogin(param) {
+        console.log(param);
         axios('get',
           `https://github.com/login/oauth/access_token?client_id=${param.clientID}&client_secret=${param.clientSecret}&code=${param.code}`
         ).then((res) => {
+          console.log(res);
           let token = common.getQueryVariable(res, 'access_token') || ''
           localStorage.setItem('access_token', token)
         })
