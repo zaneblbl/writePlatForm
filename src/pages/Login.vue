@@ -30,6 +30,7 @@
 
     created() {
       let code = common.getQueryVariable(window.location.href, 'code')
+      console.log(code);
       if (code) {
         this.init()
       }

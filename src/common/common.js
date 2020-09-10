@@ -92,7 +92,7 @@ var common = {
       return t
     }
   },
-  getQueryVariable(string,variable) {
+  getQueryVariable(string, variable) {
     var query = string || window.location.href
     var vars = query.split('&')
     for (var i = 0; i < vars.length; i++) {
@@ -102,7 +102,7 @@ var common = {
       }
     }
     return (false)
-},
+  },
 }
 
 export default common
