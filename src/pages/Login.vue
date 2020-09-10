@@ -1,21 +1,27 @@
 <template>
-  <div class='Login' v-loading="loading" element-loading-background="rgba(0, 0, 0, 0.3)">
+  <div class='Login'>
     <div class='contentBox'>
-      <div class='item'><span>token: </span>
-        <el-input type="text" v-model='tokenValue' class='item__input'></el-input>
+      <div class='item'><span>clientID: </span>
+        <input type="text" v-model='clientID' class='item__input'>
       </div>
-      <div @click='toLogin' class='login'>登录</div>
-      <div @click='save' class='save'>保存</div>
+      <div class='item'><span>clientSecret: </span>
+        <input type="text" v-model='clientSecret' class='item__input'>
+      </div>
+
+      <div @click='init' class='login'>登录</div>
     </div>
   </div>
 </template>
 
 <script>
-  import axios from '../common/axios'
+  import axios from '@common/axios'
+  import common from '@common/common'
   export default {
     data() {
       return {
-        tokenValue: '',
+        clientID: '3d3b51cea6b8867e0f2c',
+        clientSecret: '9a9c5abf88dee6622b7175bdfae6567f002f9ef3',
+        access_token: '',
         loading: false,
         loginText: ''
       }
@@ -23,59 +29,57 @@
 
 
     created() {
-      if (localStorage.getItem('token')) {
-        this.tokenValue = localStorage.getItem('token') || ''
+      let code = common.getQueryVariable(window.location.href, 'code')
+      if (code) {
+        this.init()
       }
     },
     methods: {
-      alert() {
-        this.$alert(this.loginText, '登录', {
-          confirmButtonText: '确定',
-          center: true,
-          callback: () => {}
-        })
-      },
-      save() {
-        if (this.tokenValue) {
-          localStorage.setItem('token', this.tokenValue)
-          this.loginText = '保存成功'
-          this.alert()
-        }
-      },
-      toLogin() {
-        let url = `https://api.github.com/?access_token=` + this.tokenValue
-        if (this.tokenValue) {
-          this.loading = true
-          axios('get', url).then(() => {
-            this.loading = false
-            localStorage.setItem('token', this.tokenValue)
-            localStorage.setItem('account', 'zaneblbl')
-            this.$router.push({
-              path: '/MainPage'
-            })
-          }, error => {
-            this.loading = false
-            if (error.response.status === 401) {
-              this.loginText = '验证失败，令牌错误'
-              this.alert()
-            } else {
-              this.loginText = '登录失败'
-              this.alert()
-            }
+      init() {
+        let self = this
+        // 获取clientID和clientSecret
+        this.access_token = localStorage.getItem('access_token') || ''
+        if (this.access_token) {
+          self.$router.push({
+            path: `/MainPage`
           })
         } else {
-          this.loginText = '令牌不能为空'
-          this.alert()
+          self.loginListener(self.clientID, self.clientSecret)
+        }
+
+
+      },
+      toLogin(param) {
+        axios('get',
+          `https://github.com/login/oauth/access_token?client_id=${param.clientID}&client_secret=${param.clientSecret}&code=${param.code}`
+        ).then((res) => {
+          let token = common.getQueryVariable(res, 'access_token') || ''
+          localStorage.setItem('access_token', token)
+        })
+
+      },
+      loginListener(clientID, clientSecret) {
+        let url = `https://github.com/login/oauth/authorize?client_id=${clientID}`
+        let code = common.getQueryVariable(window.location.href, 'code')
+        if (code) {
+          let param = {
+            'clientID': clientID,
+            'clientSecret': clientSecret,
+            'code': code
+          }
+          this.toLogin(param)
+        } else {
+          // github第三方授权登录后返回回调页面带回code
+          window.location.href = url
         }
       }
     }
 
 
-
   }
 </script>
 
-<style lang='scss'>
+<style lang="scss">
   .Login {
     width: 100%;
     height: 100vh;
