@@ -25,9 +25,9 @@ var operate = {
 
   },
   // 查
-  getFromGitHub(userName, path) {
+  getFromGitHub(reqirectUrl,userName, path) {
     return new Promise((resolve, reject) => {
-      let url = `https://api.github.com/repos/${userName}/${path.substring(0,
+      let url = reqirectUrl || `https://api.github.com/repos/${userName}/${path.substring(0,
   path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}`
       axios('get', url).then((res) => {
         let result = common.Base64.decode(res.content)
@@ -39,9 +39,9 @@ var operate = {
 
   },
   // 查列表
-  getListFromGitHub(userName, path) {
+  getListFromGitHub(reqirectUrl,userName, path) {
     return new Promise((resolve, reject) => {
-      let url = `https://api.github.com/repos/${userName}/${path.substring(0,
+      let url = reqirectUrl || `https://api.github.com/repos/${userName}/${path.substring(0,
   path.indexOf('/'))}/contents${path.substring(path.indexOf('/') + 1)?'/'+path.substring(path.indexOf('/') + 1):path.substring(path.indexOf('/') + 1)}`
       axios('get', url).then((res) => {
         let result = res
@@ -53,9 +53,9 @@ var operate = {
 
   },
   // 获取sha
-  getShaFromGitHub(userName, path) {
+  getShaFromGitHub(reqirectUrl,userName, path) {
     return new Promise((resolve, reject) => {
-      let url = `https://api.github.com/repos/${userName}/${path.substring(0,
+      let url = reqirectUrl || `https://api.github.com/repos/${userName}/${path.substring(0,
   path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}`
       axios('get', url).then((res) => {
         console.log(res);

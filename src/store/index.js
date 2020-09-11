@@ -5,8 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    currentPage:{
+      id:'',
+      title:'',
+      content:''
+    }
   },
   mutations: {
+    setCurrentPage(state, data) {
+      state.currentPage = data
+    },
   },
   actions: {
   },

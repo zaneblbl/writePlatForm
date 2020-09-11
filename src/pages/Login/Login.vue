@@ -1,6 +1,9 @@
 <template>
   <div class='Login'>
     <div class='contentBox'>
+      <div class='item'><span>gitAccount: </span>
+        <input type="text" v-model='gitAccount' class='item__input'>
+      </div>
       <div class='item'><span>clientID: </span>
         <input type="text" v-model='clientID' class='item__input'>
       </div>
@@ -19,6 +22,7 @@
   export default {
     data() {
       return {
+        gitAccount:'zaneblbl',
         clientID: '3d3b51cea6b8867e0f2c',
         clientSecret: '9a9c5abf88dee6622b7175bdfae6567f002f9ef3',
         access_token: '',
@@ -38,6 +42,7 @@
       init() {
         let self = this
         // 获取clientID和clientSecret
+        localStorage.setItem('account', self.gitAccount)
         this.access_token = localStorage.getItem('access_token') || ''
         if (this.access_token) {
           self.$router.push({

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-  import githubOperate from '../common/githubOperate'
+  import githubOperate from '@common/githubOperate'
   export default {
     props: ['path', 'list', 'currentPath', 'currentIndex', 'list__input__value'],
     created() {

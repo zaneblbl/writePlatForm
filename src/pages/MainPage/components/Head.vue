@@ -60,17 +60,17 @@
 
     .addBtn {
       @include image;
-      background-image: url('../assets/image/add.png')
+      background-image: url('../images/add.png')
     }
 
     .deleteBtn {
       @include image;
-      background-image: url('../assets/image/delete.png')
+      background-image: url('../images/delete.png')
     }
 
     .chooseBtn {
       @include image;
-      background-image: url('../assets/image/choose.png')
+      background-image: url('../images/choose.png')
     }
   }
 </style>
