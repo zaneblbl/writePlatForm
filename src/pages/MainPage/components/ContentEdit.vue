@@ -1,6 +1,6 @@
 <template>
   <div class='ContentEdit'>
-    <textarea name="" id="" v-model="nowContent" class='textarea'></textarea>
+    <textarea name="" id="" v-model="currentPage.content" class='textarea'></textarea>
     <div class='areaBar'>
       <div class='bar__areacount'>字数：{{nowContent.length}}</div>
     </div>
@@ -9,22 +9,20 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
   export default {
     data() {
       return {
-        nowContent: '',
-        content: ''
       }
     },
-    watch: {
-      getContent(newValue, oldValue) {
-        if(newValue!=oldValue) return
-        this.nowContent = JSON.parse(newValue).content
-      }
+    computed:{
+      ...mapState({
+        currentPage:'currentPage'
+      })
     },
     methods: {
       toSave() {
-        this.$emit('save', this.nowContent)
+        
       }
     }
   }

@@ -14,6 +14,8 @@ export default new Vuex.Store({
   mutations: {
     setCurrentPage(state, data) {
       state.currentPage = data
+      console.log(state.currentPage);
+      
     },
   },
   actions: {

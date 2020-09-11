@@ -30,8 +30,8 @@ var operate = {
       let url = reqirectUrl || `https://api.github.com/repos/${userName}/${path.substring(0,
   path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}`
       axios('get', url).then((res) => {
-        let result = common.Base64.decode(res.content)
-        resolve(result)
+
+        resolve(res)
       }, (fail) => {
         reject(fail)
       })
