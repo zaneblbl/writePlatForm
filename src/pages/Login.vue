@@ -29,8 +29,7 @@
 
 
     created() {
-      let code = common.getQueryVariable(window.location.href, 'code')
-      console.log(code);
+      let code = common.getQueryVariable()['code']
       if (code) {
         this.init()
       }
@@ -38,7 +37,6 @@
     methods: {
       init() {
         let self = this
-        console.log(this.access_token);
         // 获取clientID和clientSecret
         this.access_token = localStorage.getItem('access_token') || ''
         if (this.access_token) {
@@ -48,23 +46,22 @@
         } else {
           self.loginListener(self.clientID, self.clientSecret)
         }
-
-
       },
       toLogin(param) {
-        console.log(param);
         axios('get',
           `https://github.com/login/oauth/access_token?client_id=${param.clientID}&client_secret=${param.clientSecret}&code=${param.code}`
         ).then((res) => {
-          console.log(res);
-          let token = common.getQueryVariable(res, 'access_token') || ''
+          let token = common.getQueryVariable(res)['access_token'] || ''
           localStorage.setItem('access_token', token)
+          this.$router.push({
+            path: `/MainPage`
+          })
         })
 
       },
       loginListener(clientID, clientSecret) {
         let url = `https://github.com/login/oauth/authorize?client_id=${clientID}`
-        let code = common.getQueryVariable(window.location.href, 'code')
+        let code = common.getQueryVariable()['code']
         if (code) {
           let param = {
             'clientID': clientID,

@@ -29,7 +29,7 @@
       return {
         token: '',
         account: 'zaneblbl',
-        path: 'story/', // story/test/test2.json
+        path: 'test/', // story/test/test2.json
         list: [],
         isShowAddDialog: false,
         maxId: 0,
@@ -47,8 +47,8 @@
       Head
     },
     created() {
-      this.token = localStorage.getItem('token') || ''
-      this.account = localStorage.getItem('account') || ''
+      this.token = localStorage.getItem('access_token') || ''
+      // this.account = localStorage.getItem('account') || ''
       this.getlist()
     },
     methods: {
@@ -60,7 +60,8 @@
         this.getlist()
       },
       getlist() {
-        githubOperate.getListFromGitHub(this.account, this.token, `${this.path}`).then((res) => {
+        console.log(this.path)
+        githubOperate.getListFromGitHub(this.account, `${this.path}`).then((res) => {
           console.log(res);
 
           this.list = res
@@ -73,7 +74,7 @@
         obj.id = this.maxId + 1
         obj.title = title
         obj.content = ''
-        githubOperate.addToGitHub(this.account, this.token, `${this.path}/${title}-${obj.id}.json`, obj).then(() => {
+        githubOperate.addToGitHub(this.account, `${this.path}/${title}-${obj.id}.json`, obj).then(() => {
           this.$message({
             message: '添加成功',
             type: 'success'
@@ -87,7 +88,7 @@
       },
       toDelete() {
         this.loading = true
-        githubOperate.DeleteFromGitHub(this.account, this.token, `${this.currentPath}`).then(() => {
+        githubOperate.DeleteFromGitHub(this.account, `${this.currentPath}`).then(() => {
           this.$message({
             message: '删除成功',
             type: 'success'
@@ -103,7 +104,7 @@
         this.loading = true
         console.log(info);
 
-        githubOperate.getFromGitHub(this.account, this.token, `${this.path}${info.path}`).then((res) => {
+        githubOperate.getFromGitHub(this.account, `${this.path}${info.path}`).then((res) => {
           console.log(res);
 
           this.content = res
@@ -120,7 +121,7 @@
         obj.id = this.currentId
         obj.title = this.currentTitle
         obj.content = content
-        githubOperate.UpdateToGitHub(this.account, this.token, `${this.path}/${obj.title}-${obj.id}.json`, obj).then(
+        githubOperate.UpdateToGitHub(this.account, `${this.path}/${obj.title}-${obj.id}.json`, obj).then(
           () => {
             this.loading = false
             this.$message({

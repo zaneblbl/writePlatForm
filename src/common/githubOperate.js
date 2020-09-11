@@ -2,9 +2,9 @@ import common from './common'
 import axios from './axios'
 var operate = {
   // 增
-  addToGitHub(userName, accessToken, path, msg = null) {
+  addToGitHub(userName, path, msg = null) {
     let url = `https://api.github.com/repos/${userName}/${path.substring(0,
-  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
+  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}`
     let params = {}
     return new Promise((resolve, reject) => {
       // // 需要获取文件sha
@@ -25,10 +25,10 @@ var operate = {
 
   },
   // 查
-  getFromGitHub(userName, accessToken, path) {
+  getFromGitHub(userName, path) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0,
-  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
+  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}`
       axios('get', url).then((res) => {
         let result = common.Base64.decode(res.content)
         resolve(result)
@@ -39,10 +39,10 @@ var operate = {
 
   },
   // 查列表
-  getListFromGitHub(userName, accessToken, path) {
+  getListFromGitHub(userName, path) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0,
-  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
+  path.indexOf('/'))}/contents${path.substring(path.indexOf('/') + 1)?'/'+path.substring(path.indexOf('/') + 1):path.substring(path.indexOf('/') + 1)}`
       axios('get', url).then((res) => {
         let result = res
         resolve(result)
@@ -53,15 +53,15 @@ var operate = {
 
   },
   // 获取sha
-  getShaFromGitHub(userName, accessToken, path) {
+  getShaFromGitHub(userName, path) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0,
-  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
+  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}`
       axios('get', url).then((res) => {
         console.log(res);
 
         if (res.message == 'Not Found') {
-          operate.addToGitHub(userName, accessToken, path)
+          operate.addToGitHub(userName, path)
         } else {
           let result = res.sha
           resolve(result)
@@ -74,13 +74,13 @@ var operate = {
 
   },
   // 改
-  UpdateToGitHub(userName, accessToken, path, msg) {
+  UpdateToGitHub(userName, path, msg) {
     let url = `https://api.github.com/repos/${userName}/${path.substring(0,
-  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
+  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}`
     let params = {}
 
     return new Promise((resolve, reject) => {
-      operate.getShaFromGitHub(userName, accessToken, path).then((data) => {
+      operate.getShaFromGitHub(userName, path).then((data) => {
         // // 需要获取文件sha
         params.sha = data
         params.message = 'upload note'
@@ -99,12 +99,12 @@ var operate = {
     })
   },
   // 删
-  DeleteFromGitHub(userName, accessToken, path) {
+  DeleteFromGitHub(userName, path) {
     return new Promise((resolve, reject) => {
       let url = `https://api.github.com/repos/${userName}/${path.substring(0,
-  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}?access_token=${accessToken}`
+  path.indexOf('/'))}/contents/${path.substring(path.indexOf('/') + 1)}`
       let params = {}
-      operate.getShaFromGitHub(userName, accessToken, path).then((data) => {
+      operate.getShaFromGitHub(userName, path).then((data) => {
         // // 需要获取文件sha
         params.sha = data
         params.message = 'delete note'

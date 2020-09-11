@@ -6,6 +6,7 @@ const instance = axios.create({
 
 // 请求拦截
 instance.interceptors.request.use(function (config) {
+  config.headers.Authorization = localStorage.getItem('access_token') || ''
   return config
 }, (error) => {
   return Promise.reject(error)

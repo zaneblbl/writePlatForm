@@ -92,16 +92,17 @@ var common = {
       return t
     }
   },
-  getQueryVariable(string, variable) {
-    var query = string || window.location.href
-    var vars = query.split('&')
-    for (var i = 0; i < vars.length; i++) {
-      var pair = vars[i].split('=')
-      if (pair[0] == variable) {
-        return pair[1]
-      }
+  getQueryVariable(url) {
+    let _obj = {}
+    let search = url || window.location.search.substring(1)
+    let _arr = search.split('&')
+    for (let i in _arr) {
+      let _key = _arr[i].split('=')[0]
+      let _value = _arr[i].split('=')[1]
+      _obj[_key] = _value
     }
-    return (false)
+    return _obj
+
   },
 }
 
